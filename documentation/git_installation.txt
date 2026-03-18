@@ -1,0 +1,5 @@
+Create Personal/Business account on https://GitHub.com
+Create Key Pair Auth to use SSH.
+
+This tools is use to use Command Line instead of UI.
+https://git-scm.com/install/windows
