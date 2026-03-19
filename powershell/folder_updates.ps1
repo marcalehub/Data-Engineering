@@ -4,7 +4,6 @@ Function Start-UpdateSigl{
         $Folder,
         $Destination
     )
-    $username = $Env:USERNAME
     $updates = ls -Path $Source
     $main = $Folder
     $result = @()

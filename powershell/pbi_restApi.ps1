@@ -212,7 +212,7 @@ Function Send-DaxOutput{
         }
         $today = Get-Date -Format "MM-dd-yy"
         if($LastMod -ne $today){
-            $user = $Env:USERNAME
+            $user = $Env:LOCALMACHINENAME
             $token = $access[1]
             $api = "https://api.powerbi.com/v1.0/myorg/datasets/$dataset/executeQueries"
             $body = @{

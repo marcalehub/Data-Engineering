@@ -1,4 +1,4 @@
-$database = "C:\Users\$($Env:USERNAME)\OneDrive\Documents\Data Engineering\access\database.accdb"
+$database = "C:\Users\$($Env:LOCALMACHINENAME)\OneDrive\Documents\Data Engineering\access\database.accdb"
 $connection = New-Object System.Data.OleDb.OleDbConnection("Provider = Microsoft.ACE.OLEDB.12.0; Data Source = $database")
 $query = @"
 INSERT INTO USERS (USER_ID, USER_NAME, USER_LAST_NAME, ENTRY_DATE)

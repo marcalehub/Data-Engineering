@@ -7,8 +7,7 @@ Function Open-File{
 }
 
 Function Read-MultFile{
-    $user = $Env:USERNAME
-    $path = "C:\Users\$Env:USERNAME\Documents"
+    $path = "C:\Users\$Env:LOCALMACHINENAME\Documents"
     $data = @()
     get-childitem -Path $path -File | foreach-object{
         $files = $_.FullName
