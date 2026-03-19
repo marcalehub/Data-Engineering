@@ -1,4 +1,4 @@
-$database = "C:\Users\$($Env:LOCALMACHINENAME)\OneDrive\Documents\Data Engineering\access\database.accdb"
+$database = "C:\Users\$($Env:LOCALMACHINENAME)\OneDrive\Documents\Data Engineering\access\USERS_DETAIL.accdb"
 $connection = New-Object -ComObject Access.Application
 $connection.Visible = $false
 $connection.OpenCurrentDatabase($database)
@@ -9,6 +9,12 @@ $query = @"
     FROM USERS
 "@
 try{
+    try {
+        $currentDb.QueryDefs.Delete("USERS_TEMP")
+    }
+    catch {
+        Throw $_
+    }
     $currentDb.CreateQueryDef("USERS_TEMP", $query)
 }
 catch {
@@ -16,6 +22,10 @@ catch {
 }
 finally{
     if ($connection){
-        Stop-Process -Name "MSACCESS"
+        $connection.CloseCurrentDatabase()
+        $connection.Quit()
+        [System.Runtime.Interopservices.Marshal]::ReleaseComObject($connection) | Out-Null
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
     }
 }

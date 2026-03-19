@@ -1,4 +1,4 @@
-$database = "C:\Users\$($Env:LOCALMACHINENAME)\OneDrive\Documents\Data Engineering\access\database.accdb"
+$database = "C:\Users\$($Env:LOCALMACHINENAME)\OneDrive\Documents\Data Engineering\access\USERS_DETAIL.accdb"
 $connection = New-Object -ComObject Access.Application
 $connection.Visible = $false
 $connection.OpenCurrentDatabase($database)
@@ -16,6 +16,12 @@ catch {
 }
 finally{
     if ($connection){
-        Stop-Process -Name "MSACCESS"
+        $currentDb.Close()
+        [System.Runtime.Interopservices.Marshal]::ReleaseComObject($currentDb) | Out-Null
+        $connection.CloseCurrentDatabase()
+        $connection.Quit()
+        [System.Runtime.Interopservices.Marshal]::ReleaseComObject($connection) | Out-Null
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
     }
 }

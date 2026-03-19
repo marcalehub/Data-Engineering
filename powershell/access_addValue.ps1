@@ -1,4 +1,4 @@
-$database = "C:\Users\$($Env:LOCALMACHINENAME)\OneDrive\Documents\Data Engineering\access\database.accdb"
+$database = "C:\Users\$($Env:LOCALMACHINENAME)\OneDrive\Documents\Data Engineering\access\USERS_DETAIL.accdb"
 $connection = New-Object -ComObject Access.Application
 $connection.Visible = $false
 $connection.OpenCurrentDatabase($database)
@@ -6,11 +6,11 @@ try {
     [psobject]@(
         @{
             COLUMNS = 'USER_ID, USER_NAME, USER_LAST_NAME, ENTRY_DATE'
-            VALUES = @(15, ", 'Marcos Alejandro'", ", 'De Vargas Etiene',", "Format(Now(), 'yyyy-mm-dd hh:nn:ss') ")
+            VALUES = @(0, ", 'Marcos Alejandro'", ", 'De Vargas Etiene',", "Format(Now(), 'yyyy-mm-dd hh:nn:ss') ")
         },
         @{
             COLUMNS = 'USER_ID, USER_NAME, USER_LAST_NAME, ENTRY_DATE'
-            VALUES = @(19, ", 'Isaac Maria'", ", 'Encarnacion Rodriguez', ", "Format(Now(), 'yyyy-mm-dd hh:nn:ss') ")
+            VALUES = @(1, ", 'Isaac Maria'", ", 'Encarnacion Rodriguez', ", "Format(Now(), 'yyyy-mm-dd hh:nn:ss') ")
         }
     ) | ForEach-Object{
         $sql = "INSERT INTO USERS ($($_.COLUMNS)) VALUES ($($_.VALUES))"
@@ -22,6 +22,10 @@ catch {
 }
 finally{
     if ($connection){
-        Stop-Process -Name "MSACCESS"
+        $connection.CloseCurrentDatabase()
+        $connection.Quit()
+        [System.Runtime.Interopservices.Marshal]::ReleaseComObject($connection) | Out-Null
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
     }
 }
