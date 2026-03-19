@@ -21,8 +21,7 @@ catch {
     Throw $_
 }
 finally{
-    if ($connection.State -eq 'Open'){
-        $connection.CloseCurrentDatabase()
-        $connection.Quit()
+    if ($connection){
+        Stop-Process -Name "MSACCESS"
     }
 }

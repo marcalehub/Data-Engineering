@@ -2,7 +2,7 @@ $database = "C:\Users\$($Env:LOCALMACHINENAME)\OneDrive\Documents\Data Engineeri
 $connection = New-Object -ComObject Access.Application
 $connection.Visible = $false
 $connection.OpenCurrentDatabase($database)
-ForEach ($years in @(2024, 2023, 2022, 2021, 2020, 2019)){
+ForEach ($years in @(2025, 2024, 2023, 2022, 2021, 2020, 2019)){
     try {
         $output = "C:\Users\$($Env:LOCALMACHINENAME)\Downloads\IMP_$($years)_WEB.xlsx"
         if (-Not (Test-Path -Path $output)){
@@ -19,7 +19,8 @@ ForEach ($years in @(2024, 2023, 2022, 2021, 2020, 2019)){
         Throw $_
     }
 }
-if ($connection){
-    $connection.CloseCurrentDatabase()
-    $connection.Quit()
+finally{
+    if ($connection){
+        Stop-Process -Name "MSACCESS"
+    }
 }

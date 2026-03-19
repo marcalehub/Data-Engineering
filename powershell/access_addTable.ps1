@@ -19,7 +19,6 @@ catch {
 }
 finally{
     if ($connection){
-        $connection.CloseCurrentDatabase()
-        $connection.Quit()
+        Stop-Process -Name "MSACCESS"
     }
 }
