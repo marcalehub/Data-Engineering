@@ -11,6 +11,18 @@ try {
         @{
             COLUMNS = 'USER_ID, USER_NAME, USER_LAST_NAME, ENTRY_DATE'
             VALUES = @(1, ", 'Isaac Maria'", ", 'Encarnacion Rodriguez', ", "Format(Now(), 'yyyy-mm-dd hh:nn:ss') ")
+        },
+        @{
+            COLUMNS = 'USER_ID, USER_NAME, USER_LAST_NAME, ENTRY_DATE'
+            VALUES = @(2, ", 'Noemi'", ", 'De Vargas', ", "Format(Now(), 'yyyy-mm-dd hh:nn:ss') ")
+        },
+        @{
+            COLUMNS = 'USER_ID, USER_NAME, USER_LAST_NAME, ENTRY_DATE'
+            VALUES = @(3, ", 'Anudis'", ", 'Reyes', ", "Format(Now(), 'yyyy-mm-dd hh:nn:ss') ")
+        },
+        @{
+            COLUMNS = 'USER_ID, USER_NAME, USER_LAST_NAME, ENTRY_DATE'
+            VALUES = @(4, ", 'Atahualpa'", ", 'De Vargas', ", "Format(Now(), 'yyyy-mm-dd hh:nn:ss') ")
         }
     ) | ForEach-Object{
         $sql = "INSERT INTO USERS ($($_.COLUMNS)) VALUES ($($_.VALUES))"

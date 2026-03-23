@@ -36,6 +36,7 @@ if ($request.StatusCode -eq 200){
                     ;
                 }
                 $connection.DoCmd.TransferSpreadsheet(0, 10, $tableName, $output, $true)
+                Remove-Item -Path $output -Force
                 Write-Host "Imported file for $years."
             }
         }
