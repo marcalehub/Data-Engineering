@@ -11,7 +11,6 @@ Function global:Add-Pipeline{
         }
     ) | foreach-object{
         $path = Get-Location
-        $file = "PATH"
         if(Get-ScheduledTask "$($_.name)" -ErrorAction Ignore)
             {
                 Export-ScheduledTask -TaskName $($_.name) -TaskPath "\" | Out-File "PATH\$($_.name).xml"

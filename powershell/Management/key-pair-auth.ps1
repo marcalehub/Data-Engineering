@@ -4,7 +4,7 @@ Function Add-PrivatePublicKeySnowflake {
         [string]$location,
 
         [Parameter(Mandatory=$true)]
-        [string]$password,
+        [securestring]$password,
 
         [Parameter(Mandatory=$true)]
         [string]$name
@@ -19,7 +19,7 @@ Function Add-PrivatePublicKeyMicrosoft {
         [string]$location,
 
         [Parameter(Mandatory=$true)]
-        [string]$password,
+        [securestring]$password,
 
         [Parameter(Mandatory=$true)]
         [string]$name
@@ -43,7 +43,7 @@ Function Add-PrivatePublicKeyPowerShellRemoteSigned {
     )
     New-SelfSignedCertificate -Type CodeSigningCert -Subject $cert -CertStoreLocation "Cert:\CurrentUser\My"
     $cert = Get-ChildItem Cert:\CurrentUser\My | Where-Object { $_.Subject -eq $cert }
-    $folder = ls -Path "$location"
+    $folder = Get-ChildItem -Path "$location"
     ForEach ($file in $folder) {
         Set-AuthenticodeSignature -FilePath $file.FullName -Certificate $cert
     }
@@ -56,7 +56,7 @@ Function Remove-PrivatePublicKeyPowerShellRemoteSigned{
         [string]$location,
         $cert
     )
-    $folder = ls -Path "$location"
+    $folder = Get-ChildItem -Path "$location"
     ForEach ($file in $folder) {
         $unsigned = (Get-Content $($file.FullName) -Raw) -replace '(?s)# SIG # Begin signature block.*?# SIG # End signature block'
         Set-Content -Path $($file.FullName) -Value $unsigned

@@ -1,9 +1,13 @@
 Function Get-Response {
+    param(
+        [Parameter(Mandatory=$true)]
+        [System.Uri]$Url
+    )
     $listener = New-Object System.Net.HttpListener
     $listener.Prefixes.Add("$($Env:linkedIn_host)/callback/")
     $listener.Start()
     
-    Start-Process "https://api.linkedin.com/oauth/v2/authorization?response_type=code&client_id=$($Env:linkedIn_client)&redirect_uri=$($Env:linkedIn_host)/callback&scope=$($Env:linkedIn_mscope)"
+    Start-Process $Url
     
     $context = $listener.GetContext()
     $request = $context.Request
@@ -74,3 +78,7 @@ Function Publish-BusinessFeed {
         -Method Post `
         -ContentType "application/json"
 }
+
+$code = Get-Response -Url "https://api.linkedin.com/oauth/v2/authorization?response_type=code&client_id=$($Env:linkedIn_client)&redirect_uri=$($Env:linkedIn_host)/callback&scope=$($Env:linkedIn_mscope)"
+$token = Get-AccessToken -code $code
+Publish-BusinessFeed -token $token -message "Hello World from PowerShell"

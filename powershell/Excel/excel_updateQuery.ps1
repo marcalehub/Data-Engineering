@@ -1,4 +1,4 @@
-Get-Process | Where-Object {$name -eq 'EXCEL'} | Stop-Process -Force
+Get-Process | Where-Object {$_.Name -eq 'EXCEL'} | Stop-Process -Force
 try {
         $excel = new-object -comobject excel.application
         $excel.visible = $false

@@ -29,7 +29,7 @@ Function Get-FilesShp{
         $pnp = get-pnplist -Identity "Documents" -ThrowExceptionIfListNotFound 2>$null
         if($null -ne $pnp){
             if(Test-Path -Path $file){
-                rm -Path $file
+                Remove-Item -Path $file
             }
             Get-PnPFile -Url $location -Path $download -AsFile -Force
             if ($rename -eq $true){

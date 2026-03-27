@@ -48,7 +48,7 @@ Function Get-Scrapping{
         }
     ) | Foreach-Object{
         try {
-            $folder = $_.folder; $subject = $_.subject; $file_name = $_."file-name"; $extension = $_.extension
+            $folder = $_.folder; $subject = $_.subject; $extension = $_.extension
             if(Test-Path -path $folder -PathType Container){
                 ;
             }else{
@@ -56,7 +56,6 @@ Function Get-Scrapping{
             }
             $messages | Foreach-Object{
                 if (($_.ConversationTopic).startswith($subject)){
-                    $email_date = get-date($_.CreationTime) -format "MM-dd-yy"
                     $output_file = "Path.$extension"
                     $attachments = $_.Attachments
                     write-host $output_file

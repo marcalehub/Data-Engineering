@@ -20,13 +20,13 @@ Function Get-AccessToken{
         [Parameter(Mandatory=$true)]
         [string]$clientid,
 
-        [string]$password,
+        [securestring]$password,
 
         [System.Uri]$scope,
 
         [System.IO.FileInfo]$certificate
     )
-    $connection = Connect-AzAccount -ServicePrincipal `
+    Connect-AzAccount -ServicePrincipal `
     -Tenant $tenantid `
     -ApplicationId $clientid `
     -CertificatePath $certificate `
@@ -146,7 +146,6 @@ Function Set-PbiObjects{
         }
         $object | Where-Object{$_.name -match $business} | ForEach-Object {
             $status = $_.unknown
-            $today = get-date -Format "MM-dd-yyyy"
             do{
                 if ($($_.type) -eq 'dataflows'){
                     start-sleep -Seconds $attemptdf
@@ -157,7 +156,6 @@ Function Set-PbiObjects{
                 $transactions = Invoke-RestMethod -Headers $token -Uri $url -Method Get
                 $df = $transactions.value
                 $status = $df[0].status
-                $datetime = get-date $df[0].startTime -Format "MM-dd-yyyy"
             } while ($status -eq $_.track_status)
             if($status -eq 'Success' -or $status -eq 'Completed'){
                 $up_to_date+=[PSCustomObject]@{
@@ -171,7 +169,7 @@ Function Set-PbiObjects{
         $sets = ($up_to_date).Count
         if ($sets -eq 1){
             $manual_validation = $up_to_date | Where-Object { $_.status -in @("Success", "Completed")}
-            if($manual_validation -ne $null){
+            if($null -ne $manual_validation){
                 $successdt = 1
             }else{
                 $successdt = 0
@@ -212,7 +210,6 @@ Function Send-DaxOutput{
         }
         $today = Get-Date -Format "MM-dd-yy"
         if($LastMod -ne $today){
-            $user = $Env:LOCALMACHINENAME
             $token = $access[1]
             $api = "https://api.powerbi.com/v1.0/myorg/datasets/$dataset/executeQueries"
             $body = @{
@@ -236,38 +233,39 @@ Function Send-DaxOutput{
 
 # COMMON INPUTS
 
-$dataflows = @(
-    @{
-        workspace = 'workspace_id'
-        name = 'PROJECT_NAME'
-        id = 'dataflow_id'
-        report = 'dataflow_id'
-        track_status = 'InProgress'
-        type = 'dataflows'
-        hype = 'dataflows'
-        unknown = 'None'
-        endpoint = 'transactions'
-        body = @{
-            "refreshType" = "FullRefresh"
-            "notifyOption" = "MailOnFailure"
-            "isRefreshOnDataChange" = $false
-            "content-type" = "application/json"
-        }
-    }
-)
-$datasets = @(
-    @{
-        workspace = 'workspace_id'
-        name = 'PROJECT_NAME'
-        id = 'dataset_id'
-        report = 'report_id'
-        track_status = 'Unknown'
-        type = 'datasets'
-        hype = 'reports'
-        unknown = 'None'
-        endpoint = 'refreshes?`$top=1'
-        body = 'None'
-    }
-)
+# $dataflows = @(
+#     @{
+#         workspace = 'workspace_id'
+#         name = 'PROJECT_NAME'
+#         id = 'dataflow_id'
+#         report = 'dataflow_id'
+#         track_status = 'InProgress'
+#         type = 'dataflows'
+#         hype = 'dataflows'
+#         unknown = 'None'
+#         endpoint = 'transactions'
+#         body = @{
+#             "refreshType" = "FullRefresh"
+#             "notifyOption" = "MailOnFailure"
+#             "isRefreshOnDataChange" = $false
+#             "content-type" = "application/json"
+#         }
+#     }
+# )
+
+# $datasets = @(
+#     @{
+#         workspace = 'workspace_id'
+#         name = 'PROJECT_NAME'
+#         id = 'dataset_id'
+#         report = 'report_id'
+#         track_status = 'Unknown'
+#         type = 'datasets'
+#         hype = 'reports'
+#         unknown = 'None'
+#         endpoint = 'refreshes?`$top=1'
+#         body = 'None'
+#     }
+# )
 
 # Note: provide admin privileges to your application through Azure ADD and for credentials is needed key pair auth.

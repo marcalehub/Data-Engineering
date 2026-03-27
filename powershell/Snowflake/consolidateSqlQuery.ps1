@@ -7,7 +7,7 @@ Function Start-SnowflakeEtl {
             [string]$location
 
         )
-    $fullPath = $location -Replace "\\", "/"
+    $location -Replace "\\", "/"
     $procedure = @(
         @{
             status = "ONLINE"

@@ -4,12 +4,12 @@ Function Start-UpdateSigl{
         $Folder,
         $Destination
     )
-    $updates = ls -Path $Source
+    $updates = Get-ChildItem -Path $Source
     $main = $Folder
     $result = @()
     $Destination | ForEach-Object {
         $destination = "$main\$($_)"
-        $file = (ls -Path "$main\$($_)")
+        $file = (Get-ChildItem -Path "$main\$($_)")
         $file | ForEach-Object {
             foreach($update in $updates){
                 if($update.Name -eq $_.Name -and $update.LastWriteTime -ne $_.LastWriteTime){
@@ -19,7 +19,7 @@ Function Start-UpdateSigl{
                         File = "$($_)"
                         Location = "$destination"
                     }
-                }elseif ($update.Name -eq $_.Name -and $update.LastWriteTime -eq $_.LastWriteTime) {
+                }eGet-ChildItemeif ($update.Name -eq $_.Name -and $update.LastWriteTime -eq $_.LastWriteTime) {
                     $result+=[PsCustomObject]@{
                         Status = "Up-To-Date"
                         File = "$($_)"
@@ -41,9 +41,9 @@ Function Start-UpdateMult{
     $main = $Destination.folder
     $Destination.subfolder | foreach-object{
         $full_path = "$($main)\$($_)"
-        ls -Path "$($main)\$($_)" | Where-Object {$_.Name -match "-" } | ForEach-Object{
+        Get-ChildItem -Path "$($main)\$($_)" | Where-Object {$_.Name -match "-" } | ForEach-Object{
             $full_Subpath = "$($full_path)\$($_.Name)" 
-            ls -Path "$($full_path)\$($_.Name)" | foreach-object{
+            Get-ChildItem -Path "$($full_path)\$($_.Name)" | foreach-object{
                 $updates+=[PsCustomObject]@{
                     update_file = $_.Name
                     update_LastWriteTime = $_.LastWriteTime
@@ -53,9 +53,9 @@ Function Start-UpdateMult{
         }
     }
     $source_updates = @()
-    ls -Path $Source | Where-Object {$_.Name -match "-" } | ForEach-Object{
+    Get-ChildItem -Path $Source | Where-Object {$_.Name -match "-" } | ForEach-Object{
         $full_main_path = "$Source\$($_.Name)"
-        ls -Path "$Source\$($_.Name)" | ForEach-Object{
+        Get-ChildItem -Path "$Source\$($_.Name)" | ForEach-Object{
             $source_updates+=[PsCustomObject]@{
                 source_file = $_.Name
                 source_LastWriteTime = $_.LastWriteTime
