@@ -9,3 +9,4 @@ New-Object System.Windows.Controls.Menu
 New-Object System.Windows.Controls.Image
 New-Object System.Windows.Controls.ProgressBar
 New-Object System.Windows.Controls.TabControl
+New-Object System.Windows.Controls.StackPanel

@@ -1,0 +1,1 @@
+Register-ScheduledJob -Name "JOB_NAME" -FilePath "FILE_PATH.ps1" 

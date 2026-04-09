@@ -12,3 +12,5 @@ ForEach ($i in 1..10) {
     Write-Host $i (Get-Date)
     Start-Sleep -Seconds 1
 }
+
+$ 1..10
