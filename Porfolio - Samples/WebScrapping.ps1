@@ -39,6 +39,8 @@ Function WebScrapping {
     do {
         $trySet++
         $request = Invoke-WebRequest -Uri $url -UseBasicParsing -ErrorAction Stop
+        $currentFile = 0
+        $files = $years.Count
         try{
             ForEach ($year in $years){
                 ${file name} = $sample -replace "$samplePattern", "$year"
@@ -58,7 +60,13 @@ Function WebScrapping {
                         Write-Host "No URL found for year $($year). Skipping download."
                         continue
                     }
+
                     Invoke-WebRequest -Uri $($url) -OutFile $output -UseBasicParsing
+                    $currentFile+=1
+                    Write-Progress `
+                        -Activity "Importing File" `
+                        -Status "Processing Files $currentFile out of $files" `
+                        -PercentComplete $currentFile
                     Write-Host "Imported file for $year."
                 }
             }
@@ -73,7 +81,7 @@ Function WebScrapping {
         $request.StatusCode -eq 200 -or $trySet -eq 2
     )
 
-    if($databaseProvider -eq 'Access') {
+    if($request.StatusCode -eq 200 -and $databaseProvider -eq 'Access') {
         $database = (Join-Path -Path $path -ChildPath "OneDrive\Documents\Data Engineering\access\$name$(
             $years | ForEach-Object{$_}).accdb"
         ) -replace "$namePattern", "$replaceName"
@@ -81,13 +89,19 @@ Function WebScrapping {
         $connection = New-Object -ComObject Access.Application
         $connection.Visible = $false
         
-        try {
-            $connection.OpenCurrentDatabase($database)
-        }
-
-        catch {
+        if(Test-Path -Path $database){
+            $fileGB = (Get-ChildItem -Path $database).Length / 1GB
+            if($fileGB -ge 2){
+                Remove-Item -Path $database
+                $connection.NewCurrentDatabase($database)
+            }
+            else{
+                $connection.OpenCurrentDatabase($database)
+            }
+        } else {
             $connection.NewCurrentDatabase($database)
         }
+
         $currentDb = $connection.CurrentDb()
         $fileList | ForEach-Object{
             
