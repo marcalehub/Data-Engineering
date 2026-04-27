@@ -1,7 +1,7 @@
 Linux - Ubuntu
 
 --common git workflow
-git config --global alias.commontask '!f() {git status; git add . ; echo -n "Code Documentation Message? "; read msg; git commit -am $msg}; f'
+git config --global alias.commontask '!f() {git status; git add . ; echo -n "Code Documentation Message? "; read msg; git commit -am $msg; git push}; f'
 git customName "Fixing Bug 4012"
 
 --change branch dinamically
