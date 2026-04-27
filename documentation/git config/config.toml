@@ -1,0 +1,3 @@
+[alias.git]
+commontask = '!f() { git status; git add .; echo -n "Commit Message: "; read msg; git commit -am "$msg"; git push;}; f'
+chenv = '!f() { git branch; echo -n "Checkout which branch? "; read branch; git checkout $branch; }; f'
