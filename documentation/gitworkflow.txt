@@ -1,0 +1,9 @@
+Linux - Ubuntu
+
+--common git workflow
+git config --global alias.commontask '!f() {git status; git add . ; echo -n "Code Documentation Message? "; read msg; git commit -am $msg}; f'
+git customName "Fixing Bug 4012"
+
+--change branch dinamically
+git config --global alias.chenv '!f() { git branch; echo -n "Checkout which branch? "; read branch; git checkout $branch; }; f'
+git chenv
