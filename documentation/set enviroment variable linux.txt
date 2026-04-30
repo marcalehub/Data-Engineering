@@ -1,0 +1,13 @@
+set enviroment variable
+
+sudo nano ~/.bashrc
+
+add variable at the end of the variable example
+
+export variable_name=variablle_value
+
+save the file
+
+uptate file
+
+source ~/.barshrc
