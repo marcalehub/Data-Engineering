@@ -13,10 +13,10 @@ df.columns = ["Open", "High", "Low", "Close", "Volume"]
 env = BinanceTradingEnv(df)
 
 # 3. Define the Model (The "Brain")
-model = PPO("MlpPolicy", env, verbose=0, tensorboard_log=f"{path}/Data/PPOPPO_BTCUSDT_TB")
+model = PPO("MlpPolicy", env, verbose=0, tensorboard_log=f"{path}/Data/PPO/PPO_BTCUSDT_TB")
 
 # # 4. Train the "Gambler"
 model.learn(total_timesteps=10000)
 
 # # # 5. Save the strategy
-model.save(f"{path}/Data/PPOPPO_BTCUSDT_STRATEGY")
+model.save(f"{path}/Data/PPO/PPO_BTCUSDT_STRATEGY")

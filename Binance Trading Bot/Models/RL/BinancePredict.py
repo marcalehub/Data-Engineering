@@ -10,7 +10,7 @@ path = getcwd()
 
 def predict():
     try:
-        model = PPO.load(f"{path}/Data/PPOPPO_BTCUSDT_STRATEGY")
+        model = PPO.load(f"{path}/Data/PPO/PPO_BTCUSDT_STRATEGY")
     except:
         print(0)
         return
