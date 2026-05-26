@@ -1,5 +1,5 @@
 def odbc ():
-    from pyodbc import database_engine
+    import pyodbc as database_engine
     from pandas import read_sql, DataFrame
     connection = database_engine.connect(f"DSN=DSN; UID=USER; PWD=PASSWORD")
     query = """
@@ -13,7 +13,7 @@ def odbc ():
     connection.Close()
 
 def oracle ():
-    from cx_Oracle import database_engine
+    import cx_Oracle as database_engine
     from pandas import read_sql, DataFrame
     connection = database_engine.connect('username', 'password', 'server')
     query = """
