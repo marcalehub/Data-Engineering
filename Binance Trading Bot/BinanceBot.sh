@@ -9,10 +9,10 @@ LOCATION="$PWD"
 VENV_PYTHON="$LOCATION/binance/bin/python3"
 mkdir -p "$LOCATION/DATA" && mkdir -p "$LOCATION/DATA/PPO"
 
-if [[ "$BALANCE" -le "$QUANTITY_DECIMAL" ]]; then
-    echo "Insufficient balance to trade. Exiting."
-    exit
-fi
+# if [[ "$BALANCE" -le "$QUANTITY_DECIMAL" ]]; then
+#     echo "Insufficient balance to trade. Exiting."
+#     exit
+# fi
 
 while true
 do

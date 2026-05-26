@@ -1,0 +1,29 @@
+-- Install smb to your local machine
+Linux Sample
+
+sudo apt install samba
+
+-- add SharedFiles on smb.conf
+sudo nano /etc/samba/smb.conf
+
+under global add:
+vfs objects = streams_xattr
+
+for IOS device
+
+at the very end add this
+[SharedFiles]
+path = /local path
+writable = yes
+guest ok = no
+valid users = your user
+
+save this on your file
+
+Create password
+
+sudo smbpasswd -a userName
+
+then restart smb
+
+sudo systemctl restart smbd
