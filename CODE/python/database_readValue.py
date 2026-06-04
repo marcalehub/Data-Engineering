@@ -13,7 +13,9 @@ def odbc ():
     connection.Close()
 
 def oracle ():
-    import cx_Oracle as database_engine
+    #import cx_Oracle as database_engine legacy library
+    import oracledb as database_engine
+    database_engine.init_oracle_client(lib_dir="Path") # for Old database version
     from pandas import read_sql, DataFrame
     connection = database_engine.connect('username', 'password', 'server')
     query = """
